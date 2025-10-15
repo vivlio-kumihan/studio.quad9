@@ -1,6 +1,7 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import styles from "./Header.module.scss";
 
 const Header = () => {
@@ -31,9 +32,9 @@ const Header = () => {
       <div className={styles.container}>
         <h1 className={styles.logo}>Studio Quad9</h1>
         <nav className={styles.nav}>
-          <a href="/">Home</a>
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
+          <Link href="/">Home</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
         </nav>
       </div>
     </header>

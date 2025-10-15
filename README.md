@@ -1,4 +1,68 @@
+
+```
+├── src/
+│   ├── app/
+│   │   ├── Layout.jsx
+│   │   ├── page.jsx
+│   │   ├── page.module.scss
+│   │   ├── About/
+│   │   │   └── page.jsx
+│   │   │   └── About.module.scss
+│   │   ├── Contact/
+│   │   │   └── page.jsx
+│   │   │   └── Contact.module.scss
+│   │   ├── reset.css
+│   │   └── global.scss
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Header.jsx
+│   │   │   ├── Header.module.scss
+│   │   │   ├── Footer.jsx
+│   │   │   └── Footer.module.scss
+│   │   └── ui/
+│   │       ├── MediaQuerry.jsx
+│   │       ├── Button.jsx (styled-components)
+│   │       ├── MySwiper.jsx (styled-components)
+│   │       ├── Movie.jsx
+│   │       ├── Gallery.jsx (styled-components)
+│   │       └── GalleryData.jsx
+│   ├── hooks/
+│   │   └── useScrollAnimation.jsx
+│   ├── styles/
+│   │   └── globals
+│   │       ├── _variables.scss
+│   │       └── _mixins.scss
+│   └── assets/
+└── public/
+    ├── images/
+    │   ├── gallery/
+    │   │   └── index.jsx
+    │   │   └── photo01.png
+    │   │   └── photo02.jpg
+    │   │   └── photo03.jpg
+    │   │   └── ...
+    │   ├── photo100.png
+    │   ├── photo101.jpg
+    │   ├── photo102.jpg
+    │   └── ...
+    └── movies/       
+```
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+
+|fileName|caption|location|
+|:---|:----|:---|
+|220526_1023368.jpg|おいしいご飯|大阪/京橋|
+|220526_1023369.jpg|お茶|静岡/永谷園|
+|220526_1023370.jpg|アイスコーヒーをいただく|東京/渋谷|
+
+
+"fileName", "caption", "location",
+"220526_1023368.jpg", "おいしいご飯", "大阪/京橋",
+"220526_1023369.jpg", "お茶", "静岡/永谷園",
+"220526_1023370.jpg", "アイスコーヒーをいただく", "東京/渋谷",
+
 
 ## Getting Started
 

@@ -1,7 +1,7 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import "./reset.css";
-import "./globals.scss";
+import "./global.scss";
 import { Noto_Sans_JP, Noto_Serif_JP, Ysabeau } from 'next/font/google';
 
 // フォント設定

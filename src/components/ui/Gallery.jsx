@@ -1,7 +1,9 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { mq } from "./MediaQuerry";
-import GalleryData from "./GalleryData";
+// import GalleryData from "./GalleryData";
 
 // ========================================
 // Styled Components
@@ -209,14 +211,19 @@ const loadPhotos = async (page, itemsPerPage = 6) => {
 // ========================================
 // メインコンポーネント
 // ========================================
-function Gallery() {
+const Gallery = () => {
   const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [modalImage, setModalImage] = useState(null);
+  
 
   useEffect(() => {
+    fetch("/api/gallery")
+      .then((res) => res.json())
+      .then((data) => setPhotos(data));
+
     const loadGallery = async () => {
       try {
         setLoading(true);

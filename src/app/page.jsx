@@ -1,15 +1,16 @@
-'use client'
+"use client"
 
 import { useRef } from "react";
 import Image from "next/image";
-import styles from "./page.module.scss";
 
-// import useScrollAnimation from "../hooks/useScrollAnimation";
-// import { ImageSwiper } from "../components/ui/MySwiper";
-// import Gallery from "../components/ui/Gallery";
-// import Movie from "../components/ui/Movie";
-// import { BaseButton, MovieControlButton } from "../components/ui/Button";
-// import styles from "./Home.module.scss";
+import useScrollAnimation from "../hooks/useScrollAnimation";
+import { ImageSwiper } from "../components/ui/MySwiper";
+// import { getGalleryPhotoData } from "../lib/tmp/galleryPhotoLoader";
+import Gallery from "../components/ui/Gallery";
+import Movie from "../components/ui/Movie";
+import { BaseButton, MovieControlButton } from "../components/ui/Button";
+
+import styles from "./Home.module.scss";
 
 const Home = () => {
   const myImages = [
@@ -20,13 +21,13 @@ const Home = () => {
 
   const ref = useRef();
 
-  // // スクロールアニメーションを有効化 (この1行だけ追加!)
-  // useScrollAnimation({
-  //   parentSelector: ".appear",
-  //   childSelector: ".up",
-  //   threshold: 0.4,
-  //   stagger: 150, // 各要素の表示遅延(ms)
-  // });
+  // スクロールアニメーションを有効化 (この1行だけ追加!)
+  useScrollAnimation({
+    parentSelector: ".appear",
+    childSelector: ".up",
+    threshold: 0.4,
+    stagger: 150, // 各要素の表示遅延(ms)
+  });
 
   return (
     <div className="container">
@@ -37,17 +38,17 @@ const Home = () => {
           </span>
           Studio Quad9
         </h1>
-        <div className={`catch ${styles.catch}`}>
+        <div className={`catch ${styles.homeCatch}`}>
           こんにちは、スタジオ・クアッド9のWEBサイトへようこそ。
         </div>
       </div>
-      {/* <ImageSwiper
+      <ImageSwiper
         useFade
         autoplay={{ delay: 3000 }}
         speed={3000}
         images={myImages}
         heightMqLg={"500px"}
-      /> */}
+      />
       <div className={`wrapper ${styles.home} appear`}>
         <h2 className={`${styles.homeH2} up`}>Heading2-1</h2>
         <p className="up">
@@ -55,7 +56,7 @@ const Home = () => {
         </p>
         <h2 className="up">Heading2-2</h2>
         <div className="img-wrapper up">
-          <img src="/images/210806_G9_1130937.jpg" alt="夕景の近所" />
+          <Image src="/images/210806_G9_1130937.jpg" width={800} height={600} alt="夕景の近所" />
         </div>
         <p className="up">
           するともう鷺は、蛍のように、尋ねました。中で小さな火が燃えているのでしたが、立って荷物をとったような二つの窓には日覆いがおりたままになってしずかにくるくるとまわっていました。川まではよほどありましょうかねえええ、ええ、もうこの辺はひどい高原ですからうしろの方に不思議なものをひろいました。さがすと証拠もぞくぞく出ているのです。いまとって来た方を、窓から外を見てくすっとわらいましたので、なんだかわかりません。
@@ -70,7 +71,7 @@ const Home = () => {
         </p>
         <h2 className="up">Heading2-2</h2>
         <div className="img-wrapper up">
-          <img src="/images/210806_G9_1130937.jpg" alt="夕景の近所" />
+          <Image src="/images/210806_G9_1130937.jpg" width={800} height={600} alt="夕景の近所" />
         </div>
         <p className="up">
           するともう鷺は、蛍のように、尋ねました。中で小さな火が燃えているのでしたが、立って荷物をとったような二つの窓には日覆いがおりたままになってしずかにくるくるとまわっていました。川まではよほどありましょうかねえええ、ええ、もうこの辺はひどい高原ですからうしろの方に不思議なものをひろいました。さがすと証拠もぞくぞく出ているのです。いまとって来た方を、窓から外を見てくすっとわらいましたので、なんだかわかりません。
@@ -85,7 +86,7 @@ const Home = () => {
         </p>
         <h2 className="up">Heading2-2</h2>
         <div className="img-wrapper up">
-          <img src="/images/210806_G9_1130937.jpg" alt="夕景の近所" />
+          <Image src="/images/210806_G9_1130937.jpg" width={800} height={600} alt="夕景の近所" />
         </div>
         <p className="up">
           するともう鷺は、蛍のように、尋ねました。中で小さな火が燃えているのでしたが、立って荷物をとったような二つの窓には日覆いがおりたままになってしずかにくるくるとまわっていました。川まではよほどありましょうかねえええ、ええ、もうこの辺はひどい高原ですからうしろの方に不思議なものをひろいました。さがすと証拠もぞくぞく出ているのです。いまとって来た方を、窓から外を見てくすっとわらいましたので、なんだかわかりません。
@@ -100,7 +101,7 @@ const Home = () => {
         </p>
         <h2 className="up">Heading2-2</h2>
         <div className="img-wrapper up">
-          <img src="/images/210806_G9_1130937.jpg" alt="夕景の近所" />
+          <Image src="/images/210806_G9_1130937.jpg" width={800} height={600} alt="夕景の近所" />
         </div>
         <p className="up">
           するともう鷺は、蛍のように、尋ねました。中で小さな火が燃えているのでしたが、立って荷物をとったような二つの窓には日覆いがおりたままになってしずかにくるくるとまわっていました。川まではよほどありましょうかねえええ、ええ、もうこの辺はひどい高原ですからうしろの方に不思議なものをひろいました。さがすと証拠もぞくぞく出ているのです。いまとって来た方を、窓から外を見てくすっとわらいましたので、なんだかわかりません。
@@ -110,12 +111,12 @@ const Home = () => {
           ただたくさんのくるみの木が幾本も幾本も、高く星ぞらに浮かんでいるのです。ぼくらからみると、ここはランカシャイヤだ。そしてカムパネルラもまた、高く口笛を吹いたり笑ったりしていました。こどもが水へ落ちたんですかいや、証明するに要るんだ。きっとみんなのほんとうの神さまうその神さまだいあなたの神さまはもちろんたった一人ですああ、そうだ、ぼくの方をちょっと見ました。
         </p>
       </div>
-      {/* <Gallery /> */}
-      {/* <Movie ref={ref} path="/movies/sample.mp4" /> */}
-      {/* <div className={`wrapper ${styles.btn}`}> */}
-        {/* <MovieControlButton ref={ref} /> */}
-        {/* <BaseButton>Base Button</BaseButton> */}
-      {/* </div> */}
+      <Gallery />
+      <Movie ref={ref} path="/movies/sample.mp4" />
+      <div className={`wrapper ${styles.btn}`}>
+        <MovieControlButton ref={ref} />
+        <BaseButton>Base Button</BaseButton>
+      </div>
     </div>
   );
 };
