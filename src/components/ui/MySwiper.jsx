@@ -10,7 +10,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 // UIで使用するメディアクエリのモジュールを読み込む
-import { mq } from "./MediaQuerry";
+import { mq } from "./MixIn";
 
 // 共通のStyledSwiper
 const StyledSwiper = styled(Swiper)`

@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { readPhotographedWorksMetaData } from "@/lib/readPhotographedWorksMetaData";
 import styled from "styled-components";
-import { mq } from "./MediaQuerry";
-// import GalleryData from "./GalleryData";
+import { mq, fontFamily } from "./MixIn";
 
 // ========================================
 // Styled Components
@@ -82,6 +82,7 @@ const PhotoCaption = styled.p`
 `;
 
 const PhotoDate = styled.time`
+  font-family: ${fontFamily.gothic};
   font-size: 0.75rem;
   color: #999;
 `;
@@ -145,6 +146,25 @@ const EndMessage = styled.p`
   padding: 2rem;
 `;
 
+const ResetButton = styled.button`
+  display: block;
+  margin: 0 auto;
+  padding: 0.75rem 2.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #3182ce;
+  background-color: white;
+  border: 2px solid #3182ce;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #3182ce;
+    color: white;
+  }
+`;
+
 const Modal = styled.div`
   display: flex;
   align-items: center;
@@ -195,73 +215,81 @@ const CloseButton = styled.button`
   }
 `;
 
-// ========================================
-// 画像を段階的に読み込む関数
-// ========================================
-const loadPhotos = async (page, itemsPerPage = 6) => {
-  // 読み込みをシミュレート
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const startIndex = (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  return GalleryData.slice(startIndex, endIndex);
-};
-
-// ========================================
-// メインコンポーネント
-// ========================================
 const Gallery = () => {
-  const [photos, setPhotos] = useState([]);
+  const [allMetaData, setAllMetaData] = useState([]);
+  const [displayedPhotos, setDisplayedPhotos] = useState([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const [modalImage, setModalImage] = useState(null);
-  
+  const gallerySectionRef = useRef(null);
 
+  const itemsPerPage = 6;
+
+  // ⚫︎非同期処理をしているのは、ネットワーク通信でCSVを取得しているから。
+  // ⚫︎3つの更新用関数の意味
+  //    1. ディレクトリにあるアイテム・データ（写真データ）の初期化。
+  //    2. 表示しているアイテムの状態を更新用関数で更新する。
+  //       最初から6つのアイテムのセットが『予約』される。
+  //    3. この行がないと、dataがitemsPerPageの数より少ない場合に、
+  //      『もっと見る』ボタンが表示されてしまうから。
   useEffect(() => {
-    fetch("/api/gallery")
-      .then((res) => res.json())
-      .then((data) => setPhotos(data));
-
-    const loadGallery = async () => {
+    const fetchData = async () => {
       try {
-        setLoading(true);
-        const newPhotos = await loadPhotos(page);
-        // 新しい写真がない場合
-        if (newPhotos.length === 0) {
-          setHasMore(false);
-          return;
-        }
-
-        // 写真を追加
-        setPhotos((prev) => {
-          // 重複チェック：既存のIDを確認
-          const existingIds = new Set(prev.map((p) => p.id));
-          const uniqueNewPhotos = newPhotos.filter(
-            (p) => !existingIds.has(p.id)
-          );
-          const updated = [...prev, ...uniqueNewPhotos];
-          // すべての写真を表示したかチェック
-          updated.length >= GalleryData.length && setHasMore(false);
-
-          return updated;
-        });
+        const data = await readPhotographedWorksMetaData();
+        setAllMetaData(data);
+        setDisplayedPhotos(data.slice(0, itemsPerPage));
+        setHasMore(data.length > itemsPerPage);
       } catch (error) {
-        console.error("写真の取得に失敗しました:", error);
+        console.error("写真のデータ取得に失敗しました。", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadGallery();
-  }, [page]);
+    fetchData();
+  }, []);
+
+  // page, allMetaDataのstateが更新する度に発火する。
+  useEffect(() => {
+    if (page === 1) return;
+
+    const loadMorePhotos = async () => {
+      setLoading(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const newPhotos = allMetaData.slice(startIndex, endIndex);
+
+      if (newPhotos.length === 0) {
+        setHasMore(false);
+      } else {
+        setDisplayedPhotos((prev) => [...prev, ...newPhotos]);
+        endIndex >= allMetaData.length && setHasMore(false);
+      }
+      setLoading(false);
+    };
+
+    loadMorePhotos();
+  }, [page, allMetaData]);
 
   const handleLoadMore = () => {
     setPage((prev) => prev + 1);
   };
 
-  const handlePhotoClick = (src) => {
+  const handleReset = () => {
+    setPage(1);
+    setDisplayedPhotos(allMetaData.slice(0, itemsPerPage));
+    setHasMore(allMetaData.length > itemsPerPage);
+    gallerySectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  const handlePhotoCardClick = (src) => {
     setModalImage(src);
   };
 
@@ -271,21 +299,31 @@ const Gallery = () => {
 
   return (
     <>
-      <GallerySection>
+      <GallerySection ref={gallerySectionRef}>
         <SectionTitle>📷 Photo Gallery</SectionTitle>
         <SectionSubtitle>最新の撮影作品をチェック</SectionSubtitle>
-
         <PhotoGrid>
-          {photos.map((photo) => (
+          {displayedPhotos.map((item) => (
             <PhotoCard
-              key={photo.id}
-              onClick={() => handlePhotoClick(photo.src)}
+              key={item.fileName}
+              onClick={() =>
+                handlePhotoCardClick(`/images/photographedWorks/${item.fileName}`)
+              }
             >
-              <PhotoImage src={photo.src} alt={photo.caption} />
+              <PhotoImage
+                src={`/images/photographedWorks/${item.fileName}`}
+                alt={item.fileName}
+                width={400}
+                height={300}
+              />
               <PhotoInfo>
-                <PhotoCaption>{photo.caption}</PhotoCaption>
-                <PhotoDate>{photo.date}</PhotoDate>
-                <PhotoLocation>📍 {photo.location}</PhotoLocation>
+                <PhotoCaption>{item.caption}</PhotoCaption>
+                <PhotoDate>
+                  {item.fileName
+                    .split("_")[0]
+                    .replace(/(\d{2})(\d{2})(\d{2})/, "$1/$2/$3")}
+                </PhotoDate>
+                <PhotoLocation>📍 {item.location}</PhotoLocation>
               </PhotoInfo>
             </PhotoCard>
           ))}
@@ -302,8 +340,11 @@ const Gallery = () => {
           <LoadMoreButton onClick={handleLoadMore}>もっと見る ▼</LoadMoreButton>
         )}
 
-        {!loading && !hasMore && photos.length > 0 && (
-          <EndMessage>すべての作品を表示しました</EndMessage>
+        {!loading && !hasMore && displayedPhotos.length > 0 && (
+          <>
+            <EndMessage>すべての作品を表示しました</EndMessage>
+            <ResetButton onClick={handleReset}>最初に戻る ↑</ResetButton>
+          </>
         )}
       </GallerySection>
 

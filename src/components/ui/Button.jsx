@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { mq } from "./MediaQuerry";
+import { mq } from "./MixIn";
 
 const StyledBaseButton = styled.button`
   /* レイアウト */

@@ -33,6 +33,7 @@ const Header = () => {
         <h1 className={styles.logo}>Studio Quad9</h1>
         <nav className={styles.nav}>
           <Link href="/">Home</Link>
+          <Link href="/gallery">Gallery</Link>
           <Link href="/about">About</Link>
           <Link href="/contact">Contact</Link>
         </nav>

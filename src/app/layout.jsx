@@ -35,12 +35,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ja">
       <body
-      lang="ja"
-      className={`
+        lang="ja"
+        className={`
         ${notoSans.className}
         ${notoSerif.className}
         ${ysabeau.className}
-      `}>
+        // 開発中だとコンソールでエラーが発生する。
+        // コード自体は問題なし。
+        // どうしても開発中にこのエラーを抑え込みたい場合は、
+        // 以下のコードを入れる。
+        suppressHydrationWarning
+      `}
+      >
         <Header />
         <main>{children}</main>
         <Footer />
